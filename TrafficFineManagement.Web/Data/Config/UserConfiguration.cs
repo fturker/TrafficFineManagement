@@ -4,7 +4,7 @@ using TrafficFineManagement.Web.Models.Entities;
 
 namespace TrafficFineManagement.Web.Data.Config
 {
-    public class UserConfigure : IEntityTypeConfiguration<User>
+    public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
@@ -27,6 +27,8 @@ namespace TrafficFineManagement.Web.Data.Config
 
             builder.Property(x => x.TaxNumber)
                 .HasMaxLength(10);
+            builder.HasIndex(x => x.TaxNumber)
+                .IsUnique();
         }
     }
 }

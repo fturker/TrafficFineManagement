@@ -4,7 +4,7 @@ using TrafficFineManagement.Web.Models.Entities;
 
 namespace TrafficFineManagement.Web.Data.Config
 {
-    public class FineConfigure : IEntityTypeConfiguration<Fine>
+    public class FineConfiguration : IEntityTypeConfiguration<Fine>
     {
         public void Configure(EntityTypeBuilder<Fine> builder)
         {

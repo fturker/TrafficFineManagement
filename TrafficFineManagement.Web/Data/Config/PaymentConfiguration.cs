@@ -4,7 +4,7 @@ using TrafficFineManagement.Web.Models.Entities;
 
 namespace TrafficFineManagement.Web.Data.Config
 {
-    public class PaymentConfigure : IEntityTypeConfiguration<Payment>
+    public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
     {
         public void Configure(EntityTypeBuilder<Payment> builder)
         {

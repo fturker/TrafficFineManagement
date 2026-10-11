@@ -21,4 +21,4 @@ namespace TrafficFineManagement.Web.Data.Config
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
-}
+} 
