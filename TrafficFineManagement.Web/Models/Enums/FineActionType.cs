@@ -9,5 +9,11 @@ namespace TrafficFineManagement.Web.Models.Enums
 
         [Display(Name = "Reddedildi")]
         Rejected = 1,
+
+        [Display(Name = "Oluşturuldu")]
+        Created = 2,
+
+        [Display(Name = "Düzenlendi")]
+        Updated = 3
     }
 }

@@ -1,11 +1,13 @@
+using TrafficFineManagement.Web.Data.Seed;
 using TrafficFineManagement.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddDatabaseContext(builder.Configuration);
+builder.Services.AddIdentityServices();
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
@@ -20,6 +22,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -29,5 +32,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+await RoleSeeder.SeedAsync(app.Services);
 
 app.Run();
