@@ -24,6 +24,8 @@ namespace TrafficFineManagement.Web.Extensions
             services.AddScoped<IFineHistoryService, FineHistoryService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserBusinessRules, UserBusinessRules>();
+            services.AddScoped<IAuthService, AuthService>();
+
 
             return services;
         }

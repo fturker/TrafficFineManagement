@@ -10,7 +10,7 @@ namespace TrafficFineManagement.Web.Rules.Implementations
 {
     public class UserBusinessRules(
         UserManager<User> userManager,
-        RoleManager<User> roleManager,
+        RoleManager<IdentityRole> roleManager,
         IHttpContextAccessor httpContextAccessor) : IUserBusinessRules
 
     {

@@ -6,7 +6,7 @@ using TrafficFineManagement.Web.Services.Interfaces;
 
 namespace TrafficFineManagement.Web.Services.Implementations
 {
-    public class FineHistoryService(IFineHistoryRepository fineHistoryRepository,
+    public class FineHistoryService(IFineHistoryRepository fineHistoryRepository
         ) : IFineHistoryService
     {
         public async Task<Result<List<FineHistoryResponse>>> GetByFineIdAsync(int fineId)
