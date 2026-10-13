@@ -8,9 +8,15 @@ namespace TrafficFineManagement.Web.Controllers
     public class AuthController(IAuthService authService) : Controller
     {
         [AllowAnonymous]
+        [HttpGet("/")]
         [HttpGet("/login")]
         public IActionResult Login()
         {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
 
@@ -33,6 +39,14 @@ namespace TrafficFineManagement.Web.Controllers
             ModelState.AddModelError(string.Empty, result.Message);
 
             return View();
+        }
+
+        [HttpPost("/logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await authService.LogoutAsync();
+
+            return RedirectToAction("login", "auth");
         }
     }
 }

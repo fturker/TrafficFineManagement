@@ -1,0 +1,88 @@
+﻿@using TrafficFineManagement.Web.Consts
+
+@{
+    var isSuperAdmin = User.IsInRole(RoleName.SuperAdmin);
+    var isCitizen = User.IsInRole(RoleName.Citizen);
+    var isOfficer = User.IsInRole(RoleName.Officer);
+    var isAdmin = User.IsInRole(RoleName.Admin);
+    var isFinance = User.IsInRole(RoleName.Finance);
+
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+
+    string MenuClass(string controller, string action)
+    {
+        var isActive = IsActive(controller, action);
+
+        return isActive
+        ? "nav-link active text-white rounded-0"
+        : "nav-link text-dark bg-secondary bg-opacity-25 rounded-0";
+    }
+
+    bool IsActive(string controller, string action)
+    {
+        if (string.Equals(currentController, controller) && string.Equals(currentAction, action))
+            return true;
+
+        return false;
+    }
+}
+
+<nav class="nav nav-pills flex-column text-nowrap bg-op">
+    <a class="@MenuClass("home","index")" asp-controller="home" asp-action="index">Ana Sayfa</a>
+
+    <a class="@MenuClass("car", "my-cars")" asp-controller="car" asp-action="my-cars">
+        Araçlarım
+    </a>
+
+    <a class="@MenuClass("fine", "my-fines")" asp-controller="fine" asp-action="my-fines">
+        Cezalarım
+    </a>
+
+    @if (isOfficer || isSuperAdmin)
+    {
+        <a class="@MenuClass("fine", "create")" asp-controller="fine" asp-action="create">
+            Ceza Oluştur
+        </a>
+
+        <a class="@MenuClass("fine", "created-by-me")" asp-controller="fine" asp-action="created-by-me">
+            Yazdığım Cezalar
+        </a>
+    }
+
+    @if (isAdmin || isSuperAdmin)
+    {
+        <a class="@MenuClass("user", "index")" asp-controller="user" asp-action="index">
+            Kullanıcılar
+        </a>
+    }
+
+    @if (isAdmin || isFinance || isSuperAdmin)
+    {
+        <a class="@MenuClass("car", "index")" asp-controller="car" asp-action="index">
+            Araçlar
+        </a>
+
+        <a class="@MenuClass("fine", "index")" asp-controller="fine" asp-action="index">
+            Cezalar
+        </a>
+    }
+
+    @if (isAdmin || isSuperAdmin)
+    {
+        <a class="@MenuClass("fine", "pending-admin")" asp-controller="fine" asp-action="pending-admin">
+            Yönetici Onayı Bekleyenler
+        </a>
+    }
+
+    @if (isFinance || isSuperAdmin)
+    {
+        <a class="@MenuClass("fine", "pending-finance")" asp-controller="fine" asp-action="pending-finance">
+            Finans Onayı Bekleyenler
+        </a>
+
+        <a class="@MenuClass("finance", "index")" asp-controller="finance" asp-action="index">
+            Finans Tabloları
+        </a>
+    }
+</nav>

@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Giriş Yap | Trafik Cezaları Yönetim Sistemi</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="container">
+        <form method="post" asp-action="Create" asp-controller="Cars">
+            <div>
+                <label for="plate">Plaka Giriniz</label>
+                <br />
+                <input type="text" id="plate" name="plate" maxlength="9" placeholder="34ABC123"/>
+            </div>
+            <div>
+                <label for="brand">Marka Giriniz</label>
+                <br />
+                <input type="text" id="brand" name="brand" maxlength="20"/>
+            </div>
+            <div>
+                <label for="model">Model Giriniz</label>
+                <br />
+                <input type="text" id="model" name="model" maxlength="20" />
+            </div>
+            <div>
+                <label for="ownerId">Araç Sahibinin ID Bilgisini Giriniz</label>
+                <br />
+                <input type="text" id="ownerId" name="ownerId" maxlength="20" />
+            </div>
+            <div class="p-3">
+                <button class="btn btn-primary" type="button">Kaydet</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

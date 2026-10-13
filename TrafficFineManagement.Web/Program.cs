@@ -4,7 +4,13 @@ using TrafficFineManagement.Web.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(
+    options =>
+    {
+        options.Filters.Add(
+            new Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter());
+    });
+
 builder.Services.AddDatabaseContext(builder.Configuration);
 builder.Services.AddIdentityServices();
 builder.Services.AddApplicationServices();
@@ -29,9 +35,14 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Auth}/{action=login}/{id?}")
     .WithStaticAssets();
 
 await RoleSeeder.SeedAsync(app.Services);
+if (app.Environment.IsDevelopment())
+{
+    await SuperAdminSeeder.SeedAsync(app.Services);
+}
+
 
 app.Run();
