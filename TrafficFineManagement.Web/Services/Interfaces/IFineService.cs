@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using TrafficFineManagement.Web.Models.Common;
+using TrafficFineManagement.Web.Models.DTOs.Car;
 using TrafficFineManagement.Web.Models.DTOs.Fine;
 
 namespace TrafficFineManagement.Web.Services.Interfaces
@@ -25,5 +26,9 @@ namespace TrafficFineManagement.Web.Services.Interfaces
 
         Task<Result<bool>> RejectAsync(int id, FineDecisionRequest request,
             string actingUserId);
+
+        Task<Result<List<FineListResponse>>> GetByOwnerId(FineFilterRequest request, string ownerId);
+
+        Task<Result<List<FineListResponse>>> GetByCreatedByUserId(FineFilterRequest request, string createdByUserId);
     }
 }

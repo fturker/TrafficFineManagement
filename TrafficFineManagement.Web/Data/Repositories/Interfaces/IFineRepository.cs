@@ -11,7 +11,9 @@ namespace TrafficFineManagement.Web.Data.Repositories.Interfaces
             string? searchTerm,
             int? carId,
             FineStatus? status,
-            bool? isPaid);
+            bool? isPaid,
+            string? ownerId = null,
+            string? createdByUserId = null);
 
         Task<Fine?> GetByIdAsync(int id);
 

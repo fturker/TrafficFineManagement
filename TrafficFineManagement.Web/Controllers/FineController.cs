@@ -32,7 +32,7 @@ namespace TrafficFineManagement.Web.Controllers
         {
             request.Status = FineStatus.New;
 
-            return ShowListAsync(request, "Yönetici Onayı Bekleyen Cezalar");
+            return ShowListAsync(request, "Yönetici Onayı Bekleyen Cezalar", "Pending");
         }
 
         [Authorize(Roles = RoleName.Finance + "," + RoleName.SuperAdmin)]
@@ -43,7 +43,8 @@ namespace TrafficFineManagement.Web.Controllers
 
             return ShowListAsync(
                 request,
-                "Finans Onayı Bekleyenler");
+                "Finans Onayı Bekleyenler",
+                "Pending");
         }
 
         [Authorize(Roles = RoleName.Officer + "," + RoleName.SuperAdmin)]
@@ -95,7 +96,7 @@ namespace TrafficFineManagement.Web.Controllers
             if (!ModelState.IsValid)
             {
                 TempData["ErrorMessage"] = "Geçersiz işlem bilgisi.";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(PendingAdmin));
             }
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -108,7 +109,7 @@ namespace TrafficFineManagement.Web.Controllers
             TempData[result.IsSuccess ? "SuccessMessage" : "ErrorMessage"] =
                 result.IsSuccess ? "Ceza onaylandı." : result.Message;
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(PendingAdmin));
         }
 
         [Authorize(Roles =
@@ -131,10 +132,37 @@ namespace TrafficFineManagement.Web.Controllers
             return View(result.Data);
         }
 
+        [Authorize(Roles = RoleName.Officer + "," + RoleName.SuperAdmin)]
+        [HttpGet("created-by-me")]
+        public async Task<IActionResult> CreatedByMe(FineFilterRequest request)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrWhiteSpace(userId))
+                return Challenge();
+
+            ViewData["Filter"] = request;
+
+            if (!ModelState.IsValid)
+                return View(new List<FineListResponse>());
+
+            var result = await fineService.GetByCreatedByUserId(request, userId);
+
+            if (!result.IsSuccess || result.Data is null)
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+
+                return View(new List<FineListResponse>());
+            }
+
+            return View(result.Data);
+        }
+
 
         private async Task<IActionResult> ShowListAsync(
             FineFilterRequest request,
-            string title)
+            string title,
+            string viewName = "Index")
         {
             ViewData["Title"] = title;
 
@@ -149,10 +177,10 @@ namespace TrafficFineManagement.Web.Controllers
             {
                 ModelState.AddModelError(string.Empty, result.Message);
 
-                return View("Index", new List<FineListResponse>());
+                return View(viewName, new List<FineListResponse>());
             }
 
-            return View("Index", result.Data);
+            return View(viewName, result.Data); ;
         }
 
         private bool CanEdit(FineDetailResponse fine)

@@ -25,5 +25,7 @@ namespace TrafficFineManagement.Web.Models.DTOs.Fine
 
         public DateTime CreatedAt { get; set; }
         public DateTime LastUpdatedAt { get; set; }
+
+        public List<FineHistoryItemResponse> Histories { get; set; } = new();
     }
 }

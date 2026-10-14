@@ -1,0 +1,70 @@
+﻿@using TrafficFineManagement.Web.Models.DTOs.Car
+@model List<CarListResponse>
+
+@{
+    ViewData["Title"] = "Araçlarım";
+
+    var filter = ViewData["Filter"] as CarFilterRequest
+        ?? new CarFilterRequest();
+}
+
+<h1>Araçlarım</h1>
+
+<partial name="_FormMessages" />
+
+@if (Model.Count == 0)
+{
+    <p>Kayıtlı aracınız bulunamadı.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Plaka</th>
+                <th>Araç Türü</th>
+                <th>Marka</th>
+                <th>Model</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var car in Model)
+            {
+                <tr>
+                    <td>@car.Plate</td>
+                    <td>@Html.DisplayFor(_ => car.CarType)</td>
+                    <td>@car.Brand</td>
+                    <td>@car.Model</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (ViewData.ModelState.IsValid)
+{
+    <p>
+        @if (filter.PageNumber > 1)
+        {
+            <a asp-controller="My"
+               asp-action="MyCars"
+               asp-route-pageNumber="@(filter.PageNumber - 1)"
+               asp-route-pageSize="@filter.PageSize">
+                Önceki
+            </a>
+        }
+
+        <span>Sayfa @filter.PageNumber</span>
+
+        @if (Model.Count == filter.PageSize)
+        {
+            <a asp-controller="My"
+               asp-action="MyCars"
+               asp-route-pageNumber="@(filter.PageNumber + 1)"
+               asp-route-pageSize="@filter.PageSize">
+                Sonraki
+            </a>
+        }
+    </p>
+}

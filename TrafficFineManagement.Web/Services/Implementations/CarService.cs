@@ -147,6 +147,36 @@ namespace TrafficFineManagement.Web.Services.Implementations
                 MapToDetailResponse(car));
         }
 
+        public async Task<Result<List<CarListResponse>>> GetByOwnerId(CarFilterRequest request, string ownerId)
+        {
+            var pageValidate = PaginationRules.Validate(request.PageNumber, request.PageSize);
+
+            if (!pageValidate.IsSuccess)
+            {
+                return Result<List<CarListResponse>>.Failure(pageValidate.Message);
+            }
+
+            var cars = await carRepository.GetAllAsync(
+                pageNumber: request.PageNumber,
+                pageSize: request.PageSize,
+                ownerId: ownerId,
+                searchTerm: request.SearchTerm,
+                carType: request.CarType);
+
+            var response = cars.Select(car => new CarListResponse
+            {
+                Id = car.Id,
+                Plate = car.Plate,
+                CarType = car.CarType,
+                Brand = car.Brand,
+                Model = car.Model,
+                OwnerDisplayName = $"{car.User.Name} {car.User.Surname}".Trim(),
+                CompanyName = car.User.CompanyName
+            }).ToList();
+
+            return Result<List<CarListResponse>>.Success(response);
+        }
+
         private string NormalizePlate(string plate)
         {
             return plate.Replace(" ", "").ToUpper();

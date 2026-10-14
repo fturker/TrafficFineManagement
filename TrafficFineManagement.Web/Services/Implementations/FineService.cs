@@ -170,6 +170,67 @@ namespace TrafficFineManagement.Web.Services.Implementations
                 MapToDetailResponse(fine));
         }
 
+        public async Task<Result<List<FineListResponse>>> GetByOwnerId(FineFilterRequest request, string ownerId)
+        {
+            var pageValidate = PaginationRules.Validate(request.PageNumber, request.PageSize);
+
+            if (!pageValidate.IsSuccess)
+            {
+                return Result<List<FineListResponse>>.Failure(pageValidate.Message);
+            }
+
+            var fines = await fineRepository.GetAllAsync(
+                pageNumber: request.PageNumber,
+                pageSize: request.PageSize,
+                searchTerm: request.SearchTerm,
+                carId: request.CarId,
+                status: FineStatus.Completed,
+                isPaid: request.IsPaid,
+                ownerId: ownerId);
+
+            var response = fines.Select(fine => new FineListResponse
+            {
+                Id = fine.Id,
+                Plate = fine.Car.Plate,
+                Amount = fine.Amount,
+                FineDate = fine.FineDate,
+                Status = fine.Status,
+                IsPaid = fine.IsPaid
+            }).ToList();
+
+            return Result<List<FineListResponse>>.Success(response);
+        }
+
+        public async Task<Result<List<FineListResponse>>> GetByCreatedByUserId(FineFilterRequest request, string createdByUserId)
+        {
+            var pageValidate = PaginationRules.Validate(request.PageNumber, request.PageSize);
+
+            if (!pageValidate.IsSuccess)
+            {
+                return Result<List<FineListResponse>>.Failure(pageValidate.Message);
+            }
+
+            var fines = await fineRepository.GetAllAsync(
+                pageNumber: request.PageNumber,
+                pageSize: request.PageSize,
+                searchTerm: request.SearchTerm,
+                carId: request.CarId,
+                status: request.Status,
+                isPaid: request.IsPaid,
+                createdByUserId: createdByUserId);
+            var response = fines.Select(fine => new FineListResponse
+            {
+                Id = fine.Id,
+                Plate = fine.Car.Plate,
+                Amount = fine.Amount,
+                FineDate = fine.FineDate,
+                Status = fine.Status,
+                IsPaid = fine.IsPaid
+            }).ToList();
+
+            return Result<List<FineListResponse>>.Success(response);
+        }
+
         private void AddHistory(
             Fine fine,
             User user,
@@ -218,7 +279,23 @@ namespace TrafficFineManagement.Web.Services.Implementations
                     $"{fine.CreatedByUser.Name} {fine.CreatedByUser.Surname}".Trim(),
 
                 CreatedAt = fine.CreatedAt,
-                LastUpdatedAt = fine.LastUpdatedAt
+                LastUpdatedAt = fine.LastUpdatedAt,
+
+                Histories = fine.Histories
+                    .OrderBy(history => history.CreatedAt)
+                    .ThenBy(history => history.Id)
+                    .Select(history => new FineHistoryItemResponse
+                    {
+                        CreatedAt = history.CreatedAt,
+
+                        UserDisplayName = $"{history.User.Name} {history.User.Surname}".Trim(),
+
+                        ActionType = history.ActionType,
+                        Description = history.Description,
+
+                        PreviousStatus = history.PreviousStatus,
+                        NewStatus = history.NewStatus
+                    }).ToList()
             };
         }
 

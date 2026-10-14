@@ -1,0 +1,83 @@
+﻿@using TrafficFineManagement.Web.Models.DTOs.Fine
+@model List<FineListResponse>
+
+<h1>@ViewData["Title"]</h1>
+
+<partial name="_FormMessages" />
+
+@if (Model.Count == 0)
+{
+    <p>Onay bekleyen ceza bulunamadı.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Ceza ID</th>
+                <th>Plaka</th>
+                <th>Tutar</th>
+                <th>Tarih</th>
+                <th>Detay</th>
+                <th>Onay / Ret</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var fine in Model)
+            {
+                <tr>
+                    <td>@fine.Id</td>
+                    <td>@fine.Plate</td>
+                    <td>@fine.Amount.ToString("N2") TL</td>
+                    <td>@fine.FineDate.ToString("dd.MM.yyyy")</td>
+
+                    <td>
+                        <a asp-controller="Fine"
+                           asp-action="Details"
+                           asp-route-id="@fine.Id">
+                            Detay ve Geçmiş
+                        </a>
+                    </td>
+
+                    <td>
+                        <form method="post"
+                              asp-controller="Fine"
+                              asp-action="Approve"
+                              asp-route-id="@fine.Id">
+
+                            <input type="hidden"
+                                   name="ExpectedStatus"
+                                   value="@((int)fine.Status)" />
+
+                            <p>
+                                <label for="description-@fine.Id">
+                                    İşlem Açıklaması
+                                </label>
+                                <br />
+
+                                <textarea id="description-@fine.Id"
+                                  name="Description"
+                                  rows="2"
+                                  maxlength="500"
+                                  required></textarea>
+                            </p>
+
+                            <button type="submit" class="btn btn-success">
+                                Onayla
+                            </button>
+
+                            <button type="submit"
+                                    asp-controller="Fine"
+                                    asp-action="Reject"
+                                    asp-route-id="@fine.Id"
+                                    class="btn btn-danger">
+                                Reddet
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -16,5 +16,7 @@ namespace TrafficFineManagement.Web.Services.Interfaces
         Task<Result<List<CarListResponse>>> GetAllAsync(CarFilterRequest request);
 
         Task<Result<CarDetailResponse>> GetByPlateAsync(string plate);
+
+        Task<Result<List<CarListResponse>>> GetByOwnerId(CarFilterRequest request, string ownerId);
     }
 }

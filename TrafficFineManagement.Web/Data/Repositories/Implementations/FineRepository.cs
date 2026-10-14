@@ -12,15 +12,16 @@ namespace TrafficFineManagement.Web.Data.Repositories.Implementations
             context.Fines.Add(fine);
         }
 
-        public Task<List<Fine>> GetAllAsync(int pageNumber, int pageSize, string? searchTerm, int? carId, FineStatus? status, bool? isPaid)
+        public Task<List<Fine>> GetAllAsync(int pageNumber, int pageSize, string? searchTerm, int? carId, FineStatus? status, bool? isPaid, string? ownerId = null, string? createdByUserId = null)
         {
             var query = context.Fines.AsNoTracking();
 
-            query = ApplyFilters(query, searchTerm, carId, status, isPaid);
-
+            query = ApplyFilters(query, searchTerm, carId, status, isPaid, ownerId, createdByUserId);
             return query
                 .Include(fine => fine.Car)
                 .Include(fine => fine.CreatedByUser)
+                .Include(fine => fine.Histories)
+                .ThenInclude(history => history.User)
                 .OrderByDescending(fine => fine.CreatedAt)
                 .ThenByDescending(fine => fine.Id)
                 .Skip((pageNumber - 1) * pageSize)
@@ -46,7 +47,9 @@ namespace TrafficFineManagement.Web.Data.Repositories.Implementations
             string? searchTerm,
             int? carId,
             FineStatus? status,
-            bool? isPaid)
+            bool? isPaid,
+            string? ownerId = null,
+            string? createdByUserId = null)
         {
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -70,6 +73,17 @@ namespace TrafficFineManagement.Web.Data.Repositories.Implementations
             if (isPaid.HasValue)
             {
                 query = query.Where(fine => fine.IsPaid == isPaid.Value);
+            }
+
+            if(!string.IsNullOrWhiteSpace(ownerId))
+            {
+                query = query.Where(fine => fine.Car.OwnerId == ownerId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(createdByUserId))
+            {
+                query = query.Where(fine =>
+                    fine.CreatedByUserId == createdByUserId);
             }
 
             return query;
