@@ -21,7 +21,8 @@
 
     bool IsActive(string controller, string action)
     {
-        if (string.Equals(currentController, controller) && string.Equals(currentAction, action))
+        if (string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase) 
+        && string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase))
             return true;
 
         return false;

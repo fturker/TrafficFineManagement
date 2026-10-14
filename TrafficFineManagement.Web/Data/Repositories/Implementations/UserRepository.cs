@@ -47,13 +47,23 @@ namespace TrafficFineManagement.Web.Data.Repositories.Implementations
             {
                 var search = searchTerm.Trim();
 
-                query = query.Where(user =>
+                if (search.All(char.IsDigit))
+                {
+                    query = query.Where(user =>
+                        user.IdentityNumber == search ||
+                        user.TaxNumber == search);
+                }
+
+                else
+                {
+                    query = query.Where(user =>
                     user.Name.Contains(search) ||
                     user.Surname.Contains(search) ||
                     (user.UserName != null &&
                      user.UserName.Contains(search)) ||
                     (user.CompanyName != null &&
                      user.CompanyName.Contains(search)));
+                }
             }
 
             if (accountType.HasValue)

@@ -1,0 +1,66 @@
+﻿@using TrafficFineManagement.Web.Consts
+@model TrafficFineManagement.Web.Models.DTOs.Car.CarDetailResponse
+
+@{
+    ViewData["Title"] = "Araç Detayı";
+
+    var canManage = User.IsInRole(RoleName.Admin)
+        || User.IsInRole(RoleName.SuperAdmin);
+}
+
+<h1>Araç Detayı</h1>
+
+<dl>
+    <dt>Araç ID</dt>
+    <dd>@Model.Id</dd>
+
+    <dt>Plaka</dt>
+    <dd>@Model.Plate</dd>
+
+    <dt>Araç Türü</dt>
+    <dd>@Html.DisplayFor(model => model.CarType)</dd>
+
+    <dt>Marka</dt>
+    <dd>@Model.Brand</dd>
+
+    <dt>Model</dt>
+    <dd>@Model.Model</dd>
+
+    <dt>Araç Sahibi</dt>
+    <dd>@Model.OwnerName @Model.OwnerSurname</dd>
+
+    <dt>Şirket</dt>
+    <dd>@Model.CompanyName</dd>
+
+    <dt>Oluşturulma Tarihi</dt>
+    <dd>@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</dd>
+</dl>
+
+<a asp-controller="Car" class="btn btn-primary" asp-action="Index">
+    Listeye Dön
+</a>
+
+@if (canManage)
+{
+    <a asp-controller="Car"
+       asp-action="Update"
+       asp-route-id="@Model.Id">
+        Düzenle
+    </a>
+
+    <form method="post"
+          asp-controller="Car"
+          asp-action="Delete"
+          asp-route-id="@Model.Id">
+
+        <p>
+            <input type="checkbox" id="confirmDelete" required />
+
+            <label for="confirmDelete">
+                Bu aracı silmek istiyorum.
+            </label>
+        </p>
+
+        <button class="btn btn-danger" type="submit">Aracı Sil</button>
+    </form>
+}

@@ -1,0 +1,58 @@
+﻿@model TrafficFineManagement.Web.Models.DTOs.Fine.UpdateFineRequest
+
+@{
+    ViewData["Title"] = "Ceza Düzenle";
+
+    var id = ViewContext.RouteData.Values["id"];
+}
+
+<h1>Ceza Düzenle</h1>
+
+<partial name="_FormMessages" />
+
+<form method="post"
+      asp-controller="Fine"
+      asp-action="Update"
+      asp-route-id="@id">
+
+    <p>
+        <label asp-for="Amount">Tutar (TL)</label>
+        <br />
+
+        <input asp-for="Amount"
+               type="text"
+               inputmode="decimal"
+               required />
+    </p>
+
+    <p>
+        <label asp-for="FineDate">Ceza Tarihi</label>
+        <br />
+
+        <input asp-for="FineDate"
+               type="date"
+               required />
+    </p>
+
+    <p>
+        <label asp-for="Description">Açıklama</label>
+        <br />
+
+        <textarea asp-for="Description"
+                  rows="4"
+                  cols="40"
+                  maxlength="1000"
+                  required></textarea>
+    </p>
+
+    <button type="submit" class="btn btn-primary">
+        Güncelle
+    </button>
+
+    <a asp-controller="Fine"
+       asp-action="Details"
+       asp-route-id="@id"
+       class="btn btn-outline-secondary">
+        Vazgeç
+    </a>
+</form>

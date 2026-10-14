@@ -5,6 +5,8 @@ namespace TrafficFineManagement.Web.Models.DTOs.Car
 {
     public class CarFilterRequest
     {
+        public string? SearchTerm { get; set; }
+
         [EnumDataType(typeof(CarType), ErrorMessage = "Geçerli bir araç tipi seçiniz.")]
         public CarType? CarType { get; set; }
 

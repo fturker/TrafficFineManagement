@@ -1,0 +1,130 @@
+﻿@model TrafficFineManagement.Web.Models.DTOs.User.CreateUserRequest
+@using TrafficFineManagement.Web.Models.Enums
+@using TrafficFineManagement.Web.Consts
+
+@{
+    ViewData["Title"] = "Kullanıcı Ekle";
+}
+
+<h1>Kullanıcı Ekle</h1>
+
+<div>
+    <form method="post" asp-controller="user" asp-action="create">
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div asp-validation-summary="All"
+                 class="alert alert-danger"
+                 role="alert">
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] is string message)
+        {
+            <div class="alert alert-danger" role="alert">
+                @message
+            </div>
+        }
+
+        <div>
+            <label asp-for="AccountType">Hesap Türü</label>
+            <br />
+            <select 
+                asp-for="AccountType"
+                asp-items="Html.GetEnumSelectList<AccountType>()">
+            </select>
+        </div>
+
+        <div>
+            <label asp-for="Name">Ad</label>
+            <br />
+            <input asp-for="Name" maxlength="40"/>
+        </div>
+
+        <div>
+            <label asp-for="Surname">Soyad</label>
+            <br />
+            <input asp-for="Surname" maxlength="40"/>
+        </div>
+
+        <div>
+            <label asp-for="IdentityNumber">TC Kimlik Numarası</label>
+            <br />
+            <input asp-for="IdentityNumber"
+                   type="text"
+                   maxlength="11"
+                   inputmode="numeric" />
+        </div>
+
+        <div>
+            <label asp-for="CompanyName">Şirket Adı</label>
+            <br />
+            <input asp-for="CompanyName" maxlength="200" />
+        </div>
+
+        <div>
+            <label asp-for="TaxNumber">Vergi Numarası</label>
+            <br />
+            <input asp-for="TaxNumber"
+                   type="text"
+                   maxlength="10"
+                   inputmode="numeric" />
+        </div>
+
+        <div>
+            <label asp-for="BirthDate">Doğum Tarihi</label>
+            <br />
+            <input asp-for="BirthDate" type="date" />
+        </div>
+
+        <div>
+            <label asp-for="Address">Adres</label>
+            <br />
+            <textarea asp-for="Address" maxlength="250" rows="3"></textarea>
+        </div>
+
+        <div>
+            <label asp-for="Role">Rol</label>
+            <br />
+
+            <select asp-for="Role">
+                <option value="@RoleName.Citizen">Vatandaş / İşletme</option>
+
+                @if (User.IsInRole(RoleName.SuperAdmin))
+                {
+                    <option value="@RoleName.Officer">Memur</option>
+                    <option value="@RoleName.Admin">Yönetici</option>
+                    <option value="@RoleName.Finance">Finans</option>
+                    <option value="@RoleName.SuperAdmin">Süper Yönetici</option>
+                }
+            </select>
+        </div>
+
+        @if (User.IsInRole(RoleName.SuperAdmin))
+        {
+            <div>
+                <label asp-for="UserName">Personel Kullanıcı Adı</label>
+                <br />
+                <input asp-for="UserName" maxlength="256" />
+                <p>Vatandaş ve işletmeler için giriş adı TC veya vergi numarasından oluşturulur.</p>
+            </div>
+        }
+
+        <div>
+            <label asp-for="Password">Şifre</label>
+            <br />
+            <input asp-for="Password"
+                   type="password"
+                   autocomplete="new-password"
+                   required />
+        </div>
+
+        <br />
+
+        <button type="submit">Kaydet</button>
+
+        <a asp-controller="User" asp-action="Index">
+            Vazgeç
+        </a>
+
+    </form>
+</div>

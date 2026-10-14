@@ -1,0 +1,62 @@
+﻿@model TrafficFineManagement.Web.Models.DTOs.Fine.CreateFineRequest
+
+@{
+    ViewData["Title"] = "Ceza Oluştur";
+}
+
+<h1>Ceza Oluştur</h1>
+
+<form method="post"
+      asp-controller="Fine"
+      asp-action="Create">
+
+    <p>
+        <label asp-for="CarId">Araç ID</label>
+        <br />
+
+        <input asp-for="CarId"
+               type="number"
+               min="1"
+               required />
+    </p>
+
+    <p>
+        <label asp-for="Amount">Tutar (TL)</label>
+        <br />
+
+        <input asp-for="Amount"
+               type="text"
+               inputmode="decimal"
+               required />
+    </p>
+
+    <p>
+        <label asp-for="FineDate">Ceza Tarihi</label>
+        <br />
+
+        <input asp-for="FineDate"
+               type="date"
+               required />
+    </p>
+
+    <p>
+        <label asp-for="Description">Açıklama</label>
+        <br />
+
+        <textarea asp-for="Description"
+                  rows="4"
+                  cols="40"
+                  maxlength="1000"
+                  required></textarea>
+    </p>
+
+    <button type="submit" class="btn btn-primary">
+        Kaydet
+    </button>
+
+    <a asp-controller="Home"
+       asp-action="Index"
+       class="btn btn-primary">
+        Ana Sayfa
+    </a>
+</form>

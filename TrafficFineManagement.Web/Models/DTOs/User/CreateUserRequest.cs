@@ -6,11 +6,9 @@ namespace TrafficFineManagement.Web.Models.DTOs.User
 {
     public class CreateUserRequest
     {
-        [Required]
         [StringLength(40)]
         public string Name { get; set; } = string.Empty;
 
-        [Required]
         [StringLength(40)]
         public string Surname { get; set; } = string.Empty;
 

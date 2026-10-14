@@ -54,9 +54,33 @@ namespace TrafficFineManagement.Web.Services.Implementations
 
         }
 
-        public Task<Result<List<CarListResponse>>> GetAllAsync(CarFilterRequest request)
+        public async Task<Result<List<CarListResponse>>> GetAllAsync(CarFilterRequest request)
         {
-            throw new NotImplementedException();
+            if (request.PageNumber < 1 || request.PageSize < 1)
+            {
+                return Result<List<CarListResponse>>.Failure(
+                    "Page number and page size must be greater than zero.");
+            }
+
+            var cars = await carRepository.GetAllAsync(
+                pageNumber: request.PageNumber,
+                pageSize: request.PageSize,
+                ownerId: null,
+                searchTerm: request.SearchTerm,
+                carType: request.CarType);
+
+            var response = cars.Select(car => new CarListResponse
+            {
+                Id = car.Id,
+                Plate = car.Plate,
+                CarType = car.CarType,
+                Brand = car.Brand,
+                Model = car.Model,
+                OwnerDisplayName = $"{car.User.Name} {car.User.Surname}".Trim(),
+                CompanyName = car.User.CompanyName
+            }).ToList();
+
+            return Result<List<CarListResponse>>.Success(response);
         }
 
         public async Task<Result<CarDetailResponse>> GetByIdAsync(int id)

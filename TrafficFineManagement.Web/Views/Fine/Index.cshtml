@@ -1,0 +1,78 @@
+﻿@using TrafficFineManagement.Web.Consts
+@using TrafficFineManagement.Web.Models.DTOs.Fine
+@model List<FineListResponse>
+
+@{
+    ViewData["Title"] ??= "Cezalar";
+
+    var canCreate = User.IsInRole(RoleName.Officer)
+        || User.IsInRole(RoleName.SuperAdmin);
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.Count == 0)
+{
+    <p>Ceza bulunamadı.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Ceza ID</th>
+                <th>Plaka</th>
+                <th>Tutar</th>
+                <th>Ceza Tarihi</th>
+                <th>Durum</th>
+                <th>Ödeme</th>
+                <th>İşlem</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var fine in Model)
+            {
+                <tr>
+                    <td>@fine.Id</td>
+
+                    <td>@fine.Plate</td>
+
+                    <td>@fine.Amount.ToString("N2") TL</td>
+
+                    <td>
+                        @fine.FineDate.ToString("dd.MM.yyyy")
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(_ => fine.Status)
+                    </td>
+
+                    <td>
+                        @(fine.IsPaid ? "Ödendi" : "Ödenmedi")
+                    </td>
+
+                    <td>
+                        <a asp-controller="Fine"
+                           asp-action="Details"
+                           asp-route-id="@fine.Id"
+                           class="btn btn-primary">
+                            Detay
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (canCreate)
+{
+    <p>
+        <a asp-controller="Fine"
+           asp-action="Create"
+           class="btn btn-primary">
+            Ceza Oluştur
+        </a>
+    </p>
+}

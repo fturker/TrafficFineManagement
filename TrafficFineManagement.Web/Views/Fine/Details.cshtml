@@ -1,0 +1,47 @@
+﻿@model TrafficFineManagement.Web.Models.DTOs.Fine.FineDetailResponse
+
+@{
+    ViewData["Title"] = "Ceza Detayı";
+
+    var canEdit = ViewData["CanEdit"] is true;
+}
+
+<h1>Ceza Detayı</h1>
+
+<partial name="_FormMessages" />
+
+<dl>
+    <dt>Ceza ID</dt>
+    <dd>@Model.Id</dd>
+
+    <dt>Plaka</dt>
+    <dd>@Model.Plate</dd>
+
+    <dt>Tutar</dt>
+    <dd>@Model.Amount.ToString("N2") TL</dd>
+
+    <dt>Ceza Tarihi</dt>
+    <dd>@Model.FineDate.ToString("dd.MM.yyyy")</dd>
+
+    <dt>Açıklama</dt>
+    <dd>@Model.Description</dd>
+
+    <dt>Durum</dt>
+    <dd>@Html.DisplayFor(model => model.Status)</dd>
+
+    <dt>Ödeme Durumu</dt>
+    <dd>@(Model.IsPaid ? "Ödendi" : "Ödenmedi")</dd>
+
+    <dt>Oluşturan Kullanıcı</dt>
+    <dd>@Model.CreatedByUserName</dd>
+</dl>
+
+@if (canEdit)
+{
+    <a asp-controller="Fine"
+       asp-action="Update"
+       asp-route-id="@Model.Id"
+       class="btn btn-primary">
+        Düzenle
+    </a>
+}

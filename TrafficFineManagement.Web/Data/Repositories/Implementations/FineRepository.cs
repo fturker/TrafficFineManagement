@@ -14,7 +14,18 @@ namespace TrafficFineManagement.Web.Data.Repositories.Implementations
 
         public Task<List<Fine>> GetAllAsync(int pageNumber, int pageSize, string? searchTerm, int? carId, FineStatus? status, bool? isPaid)
         {
-            throw new NotImplementedException();
+            var query = context.Fines.AsNoTracking();
+
+            query = ApplyFilters(query, searchTerm, carId, status, isPaid);
+
+            return query
+                .Include(fine => fine.Car)
+                .Include(fine => fine.CreatedByUser)
+                .OrderByDescending(fine => fine.CreatedAt)
+                .ThenByDescending(fine => fine.Id)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
         public Task<Fine?> GetByIdAsync(int id)
@@ -30,9 +41,38 @@ namespace TrafficFineManagement.Web.Data.Repositories.Implementations
             return context.SaveChangesAsync();
         }
 
-        private IQueryable<Fine> ApplyFilters()    
+        private IQueryable<Fine> ApplyFilters(
+            IQueryable<Fine> query,
+            string? searchTerm,
+            int? carId,
+            FineStatus? status,
+            bool? isPaid)
         {
-            throw new NotImplementedException();
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var search = searchTerm.Trim();
+
+                query = query.Where(fine =>
+                    fine.Car.Plate.Contains(search) ||
+                    fine.Description.Contains(search));
+            }
+
+            if (carId.HasValue)
+            {
+                query = query.Where(fine => fine.CarId == carId.Value);
+            }
+
+            if (status.HasValue)
+            {
+                query = query.Where(fine => fine.Status == status.Value);
+            }
+
+            if (isPaid.HasValue)
+            {
+                query = query.Where(fine => fine.IsPaid == isPaid.Value);
+            }
+
+            return query;
         }
     }
 }

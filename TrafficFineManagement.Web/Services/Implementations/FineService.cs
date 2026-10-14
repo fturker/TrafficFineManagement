@@ -1,5 +1,6 @@
 ﻿using TrafficFineManagement.Web.Data.Repositories.Interfaces;
 using TrafficFineManagement.Web.Models.Common;
+using TrafficFineManagement.Web.Models.DTOs.Car;
 using TrafficFineManagement.Web.Models.DTOs.Fine;
 using TrafficFineManagement.Web.Models.Entities;
 using TrafficFineManagement.Web.Models.Enums;
@@ -64,9 +65,33 @@ namespace TrafficFineManagement.Web.Services.Implementations
 
         }
 
-        public Task<Result<List<FineListResponse>>> GetAllAsync(FineFilterRequest request)
+        public async Task<Result<List<FineListResponse>>> GetAllAsync(FineFilterRequest request)
         {
-            throw new NotImplementedException();
+            if (request.PageNumber < 1 || request.PageSize < 1)
+            {
+                return Result<List<FineListResponse>>.Failure(
+                    "Page number and page size must be greater than zero.");
+            }
+
+            var fines = await fineRepository.GetAllAsync(
+                pageNumber: request.PageNumber,
+                pageSize: request.PageSize,
+                searchTerm: request.SearchTerm,
+                carId: request.CarId,
+                status: request.Status,
+                isPaid: request.IsPaid);
+
+            var response = fines.Select(fine => new FineListResponse
+            {
+                Id = fine.Id,
+                Plate = fine.Car.Plate,
+                Amount = fine.Amount,
+                FineDate = fine.FineDate,
+                Status = fine.Status,
+                IsPaid = fine.IsPaid
+            }).ToList();
+
+            return Result<List<FineListResponse>>.Success(response);
         }
 
         public async Task<Result<FineDetailResponse>> GetByIdAsync(int id)

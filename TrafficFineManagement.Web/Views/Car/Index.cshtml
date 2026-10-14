@@ -1,0 +1,86 @@
+﻿@using TrafficFineManagement.Web.Consts
+@using TrafficFineManagement.Web.Models.DTOs.Car
+@model List<CarListResponse>
+
+@{
+    ViewData["Title"] = "Araçlar";
+
+    var canManage = User.IsInRole(RoleName.Admin)
+        || User.IsInRole(RoleName.SuperAdmin);
+}
+
+<div class="justify-content-between align-items-center mb-3">
+    <h1 class="mb-1">Araçlar</h1>
+
+    <br />
+    @if (Model.Count == 0)
+    {
+        <p>Araç bulunamadı.</p>
+        <br />
+    
+    }
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Plaka</th>
+                    <th>Araç Türü</th>
+                    <th>Marka</th>
+                    <th>Model</th>
+                    <th>Araç Sahibi</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var car in Model)
+                {
+                    <tr>
+                        <td>@car.Plate</td>
+                        <td>@Html.DisplayFor(_ => car.CarType)</td>
+                        <td>@car.Brand</td>
+                        <td>@car.Model</td>
+
+                        <td>
+                            @(string.IsNullOrWhiteSpace(car.CompanyName)
+                                ? car.OwnerDisplayName
+                                : car.CompanyName)
+                        </td>
+
+                        <td class="text-nowrap">
+                            <a asp-controller="Car"
+                               asp-action="Details"
+                               asp-route-id="@car.Id"
+                               class="btn btn-outline-secondary btn-sm">
+                                Detay
+                            </a>
+
+                            @if (canManage)
+                            {
+                                <a asp-controller="Car"
+                                   asp-action="Update"
+                                   asp-route-id="@car.Id"
+                                   class="btn btn-outline-primary btn-sm">
+                                    Düzenle
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+        <br />
+}
+
+    @if (canManage)
+    {
+        <a asp-controller="Car"
+           asp-action="Create"
+           class="btn btn-primary">
+            Araç Ekle
+        </a>
+    }
+</div>
