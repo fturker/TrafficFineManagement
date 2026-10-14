@@ -4,6 +4,7 @@ using TrafficFineManagement.Web.Models.Common;
 using TrafficFineManagement.Web.Models.DTOs.Car;
 using TrafficFineManagement.Web.Models.Entities;
 using TrafficFineManagement.Web.Models.Enums;
+using TrafficFineManagement.Web.Rules;
 using TrafficFineManagement.Web.Services.Interfaces;
 
 namespace TrafficFineManagement.Web.Services.Implementations
@@ -56,10 +57,11 @@ namespace TrafficFineManagement.Web.Services.Implementations
 
         public async Task<Result<List<CarListResponse>>> GetAllAsync(CarFilterRequest request)
         {
-            if (request.PageNumber < 1 || request.PageSize < 1)
+            var pageValidate = PaginationRules.Validate(request.PageNumber, request.PageSize);
+
+            if (!pageValidate.IsSuccess)
             {
-                return Result<List<CarListResponse>>.Failure(
-                    "Page number and page size must be greater than zero.");
+                return Result<List<CarListResponse>>.Failure(pageValidate.Message);
             }
 
             var cars = await carRepository.GetAllAsync(

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TrafficFineManagement.Web.Consts;
 using TrafficFineManagement.Web.Models.DTOs.Fine;
 using TrafficFineManagement.Web.Models.Enums;
@@ -55,6 +56,81 @@ namespace TrafficFineManagement.Web.Controllers
             });
         }
 
+        [Authorize(Roles = 
+            RoleName.Officer + "," + 
+            RoleName.Admin + "," +
+            RoleName.SuperAdmin)]
+        [HttpPost("create")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CreateFineRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View(request);
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrWhiteSpace(userId))
+                return Challenge();
+
+            var result = await fineService.CreateAsync(request, userId);
+
+            if (!result.IsSuccess)
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View(request);
+            }
+
+            TempData["SuccessMessage"] = "Ceza oluşturuldu.";
+
+            return RedirectToAction(nameof(Create));
+        }
+
+        [Authorize(Roles =
+            RoleName.Admin + "," +
+            RoleName.Finance + "," +
+            RoleName.SuperAdmin)]
+        [HttpPost("approve/{id:int}")]
+        public async Task<IActionResult> Approve(int id, FineDecisionRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Geçersiz işlem bilgisi.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrWhiteSpace(userId))
+                return Challenge();
+
+            var result = await fineService.ApproveAsync(id, request, userId);
+
+            TempData[result.IsSuccess ? "SuccessMessage" : "ErrorMessage"] =
+                result.IsSuccess ? "Ceza onaylandı." : result.Message;
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [Authorize(Roles =
+            RoleName.Admin + "," +
+            RoleName.Finance + "," +
+            RoleName.SuperAdmin)]
+        [HttpGet("details/{id:int}")]
+        public async Task<IActionResult> Details(int id)
+        {
+            var result = await fineService.GetByIdAsync(id);
+
+            if (!result.IsSuccess || result.Data is null)
+            {
+                TempData["ErrorMessage"] = result.Message;
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewData["CanEdit"] = CanEdit(result.Data);
+
+            return View(result.Data);
+        }
+
 
         private async Task<IActionResult> ShowListAsync(
             FineFilterRequest request,
@@ -77,6 +153,13 @@ namespace TrafficFineManagement.Web.Controllers
             }
 
             return View("Index", result.Data);
+        }
+
+        private bool CanEdit(FineDetailResponse fine)
+        {
+            return User.IsInRole(RoleName.SuperAdmin)
+                && fine.Status == FineStatus.New
+                && !fine.IsPaid;
         }
     }
 }

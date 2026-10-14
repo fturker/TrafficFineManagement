@@ -1,4 +1,5 @@
-﻿using TrafficFineManagement.Web.Models.Common;
+﻿using Microsoft.AspNetCore.Components.Web;
+using TrafficFineManagement.Web.Models.Common;
 using TrafficFineManagement.Web.Models.DTOs.Fine;
 
 namespace TrafficFineManagement.Web.Services.Interfaces
@@ -18,5 +19,11 @@ namespace TrafficFineManagement.Web.Services.Interfaces
 
         Task<Result<List<FineListResponse>>> GetAllAsync(
             FineFilterRequest request);
+
+        Task<Result<bool>> ApproveAsync(int id, FineDecisionRequest request,
+            string actingUserId);
+
+        Task<Result<bool>> RejectAsync(int id, FineDecisionRequest request,
+            string actingUserId);
     }
 }

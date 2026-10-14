@@ -7,13 +7,7 @@
 
 <h1>Araç Ekle</h1>
 
-@if (!ViewData.ModelState.IsValid)
-{
-    <div asp-validation-summary="All"
-              class="alert alert-danger"
-              role="alert">
-    </div>
-}
+<partial name="_FormMessage" />
 
 <div class="container">
     <form method="post" asp-action="create" asp-controller="car">
