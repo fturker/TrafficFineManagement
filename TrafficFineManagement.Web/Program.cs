@@ -10,6 +10,12 @@ builder.Services.AddControllersWithViews(
             new Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter());
     });
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/login";
+    options.AccessDeniedPath = "/access-denied";
+});
+
 builder.Services.AddDatabaseContext(builder.Configuration);
 builder.Services.AddIdentityServices();
 builder.Services.AddApplicationServices();

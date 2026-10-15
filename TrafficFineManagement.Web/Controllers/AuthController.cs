@@ -50,10 +50,11 @@ namespace TrafficFineManagement.Web.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("/AccessDenied")]
         [HttpGet("/access-denied")]
-        public IActionResult AccessDenied()
+        public IActionResult AccessDenied(string? returnUrl)
         {
-            Response.StatusCode = StatusCodes.Status403Forbidden;
+            ViewBag.ReturnUrl = returnUrl;
 
             return View();
         }
