@@ -2,46 +2,66 @@
 
 @{
     ViewData["Title"] = "Ceza Detayı";
-
     var canEdit = ViewData["CanEdit"] is true;
 }
 
-<h1>Ceza Detayı</h1>
+<h3 class="mb-4">Ceza Detayı</h3>
 
 <partial name="_FormMessages" />
 
-<dl>
-    <dt>Ceza ID</dt>
-    <dd>@Model.Id</dd>
+<dl class="row mb-4">
+    <dt class="col-sm-4 text-muted">Ceza ID</dt>
+    <dd class="col-sm-8">@Model.Id</dd>
 
-    <dt>Plaka</dt>
-    <dd>@Model.Plate</dd>
+    <dt class="col-sm-4 text-muted">Plaka</dt>
+    <dd class="col-sm-8">@Model.Plate</dd>
 
-    <dt>Tutar</dt>
-    <dd>@Model.Amount.ToString("N2") TL</dd>
+    <dt class="col-sm-4 text-muted">Tutar</dt>
+    <dd class="col-sm-8">@Model.Amount.ToString("N2") TL</dd>
 
-    <dt>Ceza Tarihi</dt>
-    <dd>@Model.FineDate.ToString("dd.MM.yyyy")</dd>
+    <dt class="col-sm-4 text-muted">Ceza Tarihi</dt>
+    <dd class="col-sm-8">@Model.FineDate.ToString("dd.MM.yyyy")</dd>
 
-    <dt>Açıklama</dt>
-    <dd>@Model.Description</dd>
+    <dt class="col-sm-4 text-muted">Açıklama</dt>
+    <dd class="col-sm-8 text-break">@Model.Description</dd>
 
-    <dt>Durum</dt>
-    <dd>@Html.DisplayFor(model => model.Status)</dd>
+    <dt class="col-sm-4 text-muted">Durum</dt>
+    <dd class="col-sm-8">
+        @Html.DisplayFor(model => model.Status)
+    </dd>
 
-    <dt>Ödeme Durumu</dt>
-    <dd>@(Model.IsPaid ? "Ödendi" : "Ödenmedi")</dd>
+    <dt class="col-sm-4 text-muted">Ödeme Durumu</dt>
+    <dd class="col-sm-8 @(Model.IsPaid ? "text-success" : "text-danger")">
+        @(Model.IsPaid ? "Ödendi" : "Ödenmedi")
+    </dd>
 
-    <dt>Oluşturan Kullanıcı</dt>
-    <dd>@Model.CreatedByUserName</dd>
+    <dt class="col-sm-4 text-muted">Oluşturan Kullanıcı</dt>
+    <dd class="col-sm-8">@Model.CreatedByUserName</dd>
 </dl>
 
-@if (canEdit)
-{
-    <a asp-controller="Fine"
-       asp-action="Update"
-       asp-route-id="@Model.Id"
-       class="btn btn-primary">
-        Düzenle
-    </a>
-}
+<div class="row">
+    <div class="col-12 col-md-9">
+        <div class="row g-3 justify-content-around mb-3">
+            @if (canEdit)
+            {
+                <div class="col-12 col-md-5">
+                    <a asp-controller="Fine"
+                       asp-action="Update"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-primary w-100">
+                        Düzenle
+                    </a>
+                </div>
+            }
+
+            <div class="col-12 col-md-5">
+                <a asp-controller="Fine"
+                   asp-action="Process"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-outline-primary w-100">
+                    Süreci Görüntüle
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

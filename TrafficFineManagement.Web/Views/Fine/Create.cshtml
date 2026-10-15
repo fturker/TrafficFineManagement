@@ -4,59 +4,71 @@
     ViewData["Title"] = "Ceza Oluştur";
 }
 
-<h1>Ceza Oluştur</h1>
+<h3 class="mb-4">Ceza Oluştur</h3>
 
-<form method="post"
-      asp-controller="Fine"
-      asp-action="Create">
+<partial name="_FormMessages" />
 
-    <p>
-        <label asp-for="CarId">Araç ID</label>
-        <br />
+<div class="container mb-3">
+    <form method="post"
+          asp-controller="Fine"
+          asp-action="Create">
 
-        <input asp-for="CarId"
-               type="number"
-               min="1"
-               required />
-    </p>
+        <div class="row g-3">
+            <div class=" col-12 col-md-6 mb-3">
+                <label asp-for="CarId" class="form-label">Araç ID</label>
+                <br />
 
-    <p>
-        <label asp-for="Amount">Tutar (TL)</label>
-        <br />
+                <input asp-for="CarId"
+                       type="number"
+                       min="1"
+                       class="form-control"
+                       required />
+            </div>
 
-        <input asp-for="Amount"
-               type="text"
-               inputmode="decimal"
-               required />
-    </p>
+            <div class="col-12 col-md-6 mb-3"> 
+                <label asp-for="Amount" class="form-label">Tutar (TL)</label>
+                <br />
 
-    <p>
-        <label asp-for="FineDate">Ceza Tarihi</label>
-        <br />
+                <input asp-for="Amount"
+                       type="text"
+                       inputmode="decimal"
+                       class="form-control"
+                       required />
+            </div>
 
-        <input asp-for="FineDate"
-               type="date"
-               required />
-    </p>
+            <div class="col-12 col-md-6 mb-3">
+                <label asp-for="FineDate" class="form-label">Ceza Tarihi</label>
+                <br />
 
-    <p>
-        <label asp-for="Description">Açıklama</label>
-        <br />
+                <input asp-for="FineDate"
+                       type="date"
+                       class="form-control"
+                       required />
+            </div>
 
-        <textarea asp-for="Description"
-                  rows="4"
-                  cols="40"
-                  maxlength="1000"
-                  required></textarea>
-    </p>
+            <div class="col-12 col-md-6 mb-3">
+                <label asp-for="Description" class="form-label">Açıklama</label>
+                <br />
 
-    <button type="submit" class="btn btn-primary">
-        Kaydet
-    </button>
+                <textarea asp-for="Description"
+                          rows="4"
+                          cols="40"
+                          maxlength="1000"
+                          class="form-control"
+                          required></textarea>
+            </div>
 
-    <a asp-controller="Home"
-       asp-action="Index"
-       class="btn btn-primary">
-        Ana Sayfa
-    </a>
-</form>
+            <div class="row g-3 justify-content-around">
+                <button type="submit" class="btn btn-primary col-12 col-md-5">
+                    Kaydet
+                </button>
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="btn btn-outline-primary col-12 col-md-5">
+                    Ana Sayfa
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

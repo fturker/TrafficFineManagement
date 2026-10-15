@@ -34,6 +34,8 @@ namespace TrafficFineManagement.Web.Data.Repositories.Implementations
             return context.Fines
                 .Include(fine => fine.Car)
                 .Include(fine => fine.CreatedByUser)
+                .Include(fine => fine.Histories)
+                .ThenInclude(history => history.User)
                 .FirstOrDefaultAsync(fine => fine.Id == id);
         }
 

@@ -61,7 +61,7 @@ namespace TrafficFineManagement.Web.Services.Implementations
                 fine,
                 user,
                 FineActionType.Created,
-                "Fine created.",
+                request.Description,
                 previousStatus: null,
                 createdAt: DateTime.UtcNow);
 
@@ -120,7 +120,7 @@ namespace TrafficFineManagement.Web.Services.Implementations
 
         public Task<Result<bool>> RejectAsync(int id, FineDecisionRequest request, string actingUserId)
         {
-            return ProcessDecisionAsync(id, request, actingUserId, FineActionType.Approved);
+            return ProcessDecisionAsync(id, request, actingUserId, FineActionType.Rejected);
         }
 
         public async Task<Result<FineDetailResponse>> UpdateAsync(int id, UpdateFineRequest request, string actingUserId)
@@ -326,7 +326,7 @@ namespace TrafficFineManagement.Web.Services.Implementations
             if (actionType == FineActionType.Rejected)
             {
                 var reasonResult = fineBusinessRules
-                    .ValidateRejectionReason(request.Reason);
+                    .ValidateRejectionReason(request.Description);
 
                 if (!reasonResult.IsSuccess)
                     return reasonResult;
@@ -340,8 +340,8 @@ namespace TrafficFineManagement.Web.Services.Implementations
             fine.LastUpdatedAt = now;
 
             var description = actionType == FineActionType.Rejected
-                ? request.Reason!.Trim()
-                : "Fine approved.";
+                ? request.Description!.Trim()
+                : string.IsNullOrWhiteSpace(request.Description) ? "Fine approved." : request.Description.Trim();
 
             AddHistory(
                 fine,

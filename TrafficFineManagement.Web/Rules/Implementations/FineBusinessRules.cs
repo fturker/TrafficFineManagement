@@ -67,7 +67,8 @@ namespace TrafficFineManagement.Web.Rules.Implementations
 
             var roles = await userManager.GetRolesAsync(user);
 
-            var canUpdate = roles.Contains(RoleName.SuperAdmin)
+            var canUpdate = roles.Contains(RoleName.SuperAdmin) 
+                || roles.Contains(RoleName.Admin)
                 || (roles.Contains(RoleName.Officer)
                     && fine.CreatedByUserId == user.Id);
 

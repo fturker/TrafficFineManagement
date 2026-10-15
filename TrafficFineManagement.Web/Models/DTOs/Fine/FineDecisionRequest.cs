@@ -12,6 +12,6 @@ namespace TrafficFineManagement.Web.Models.DTOs.Fine
 
         [StringLength(500,
             ErrorMessage = "Ret gerekçesi en fazla 500 karakter olabilir.")]
-        public string? Reason { get; set; }
+        public string? Description { get; set; }
     }
 }

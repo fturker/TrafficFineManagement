@@ -8,7 +8,7 @@
         ?? new FineFilterRequest();
 }
 
-<h1>Cezalarım</h1>
+<h3 class="mb-4">Cezalarım</h3>
 
 <partial name="_FormMessages" />
 
@@ -18,32 +18,34 @@
 }
 else
 {
-    <table>
-        <thead>
-            <tr>
-                <th>Ceza ID</th>
-                <th>Plaka</th>
-                <th>Tutar</th>
-                <th>Tarih</th>
-                <th>Durum</th>
-                <th>Ödeme</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @foreach (var fine in Model)
-            {
+    <div class="mb-3">
+        <table class="table table-striped table-hover table-responsive">
+            <thead>
                 <tr>
-                    <td>@fine.Id</td>
-                    <td>@fine.Plate</td>
-                    <td>@fine.Amount.ToString("N2") TL</td>
-                    <td>@fine.FineDate.ToString("dd.MM.yyyy")</td>
-                    <td>@Html.DisplayFor(_ => fine.Status)</td>
-                    <td>@(fine.IsPaid ? "Ödendi" : "Ödenmedi")</td>
+                    <th>Ceza ID</th>
+                    <th>Plaka</th>
+                    <th>Tutar</th>
+                    <th>Tarih</th>
+                    <th>Durum</th>
+                    <th>Ödeme</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+
+            <tbody>
+                @foreach (var fine in Model)
+                {
+                    <tr>
+                        <td>@fine.Id</td>
+                        <td>@fine.Plate</td>
+                        <td>@fine.Amount.ToString("N2") TL</td>
+                        <td>@fine.FineDate.ToString("dd.MM.yyyy")</td>
+                        <td>@Html.DisplayFor(_ => fine.Status)</td>
+                        <td>@(fine.IsPaid ? "Ödendi" : "Ödenmedi")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 
 @if (ViewData.ModelState.IsValid)

@@ -29,14 +29,14 @@
     }
 }
 
-<nav class="nav nav-pills flex-column text-nowrap bg-op">
+<nav class="nav nav-pills flex-column text-nowrap w-100 bg-secondary bg-opacity-25">
     <a class="@MenuClass("home","index")" asp-controller="home" asp-action="index">Ana Sayfa</a>
 
-    <a class="@MenuClass("car", "my-cars")" asp-controller="car" asp-action="my-cars">
+    <a class="@MenuClass("my", "mycars")" asp-controller="car" asp-action="my-cars">
         Araçlarım
     </a>
 
-    <a class="@MenuClass("fine", "my-fines")" asp-controller="fine" asp-action="my-fines">
+    <a class="@MenuClass("my", "myfines")" asp-controller="fine" asp-action="my-fines">
         Cezalarım
     </a>
 
@@ -46,7 +46,7 @@
             Ceza Oluştur
         </a>
 
-        <a class="@MenuClass("fine", "created-by-me")" asp-controller="fine" asp-action="created-by-me">
+        <a class="@MenuClass("fine", "createdbyme")" asp-controller="fine" asp-action="created-by-me">
             Yazdığım Cezalar
         </a>
     }
@@ -71,14 +71,14 @@
 
     @if (isAdmin || isSuperAdmin)
     {
-        <a class="@MenuClass("fine", "pending-admin")" asp-controller="fine" asp-action="pending-admin">
+        <a class="@MenuClass("fine", "pendingadmin")" asp-controller="fine" asp-action="pending-admin">
             Yönetici Onayı Bekleyenler
         </a>
     }
 
     @if (isFinance || isSuperAdmin)
     {
-        <a class="@MenuClass("fine", "pending-finance")" asp-controller="fine" asp-action="pending-finance">
+        <a class="@MenuClass("fine", "pendingfinance")" asp-controller="fine" asp-action="pending-finance">
             Finans Onayı Bekleyenler
         </a>
 

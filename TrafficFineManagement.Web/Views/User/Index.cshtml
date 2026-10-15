@@ -5,16 +5,14 @@
     ViewData["Title"] = "Kullanıcılar";
 }
 
-<h1>Kullanıcılar</h1>
-
-<a class="btn btn-primary" asp-controller="user" asp-action="create">Kullanıcı Ekle</a>
+<h3 class="mb-4">Kullanıcılar</h3>
 
 @if(@Model.Count == 0) {
     <p>Sistemde kayıtlı kullanıcı bulunamadı.</p>
 }
 
 else{
-    <div class="table-responsive">
+    <div class="table-responsive mb-3">
         <table class="table table-striped table-hover align-middle">
             <thead>
                 <tr>
@@ -50,3 +48,5 @@ else{
         </table>
     </div>
 }
+
+<a class="btn btn-primary" asp-controller="user" asp-action="create">Kullanıcı Ekle</a>

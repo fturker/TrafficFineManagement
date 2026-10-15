@@ -5,44 +5,47 @@
     ViewData["Title"] = "Araç Ekle";
     }
 
-<h1>Araç Ekle</h1>
+<h3 class="mb-4">Araç Ekle</h3>
 
-<partial name="_FormMessage" />
+<partial name="_FormMessages" />
 
-<div class="container">
+<div class="container mb-3">
     <form method="post" asp-action="create" asp-controller="car">
-        <div>
-            <label for="plate">Plaka Giriniz</label>
-            <br />
-            <input type="text" id="plate" name="plate" maxlength="9" placeholder="34ABC123" />
-        </div>
-        <div>
-            <label asp-for="CarType">Araç Türü Seçiniz</label>
-            <br />
+        <div class="row g-3">
+            <div class="mb-3 col-12 col-md-6">
+                <label class="form-label" for="plate">Plaka Giriniz</label>
+                <br />
+                <input class="form-control" type="text" id="plate" name="plate" maxlength="9" placeholder="34ABC123" />
+            </div>
+            <div class="mb-3 col-12 col-md-6">
+                <label asp-for="CarType" class="form-label">Araç Türü Seçiniz</label>
+                <br />
 
-            <select asp-for="CarType"
-                    asp-items="Html.GetEnumSelectList<CarType>()"
-                    required>
-                <option value="">Seçiniz</option>
-            </select>
-        </div>
-        <div>
-            <label for="brand">Marka Giriniz</label>
-            <br />
-            <input type="text" id="brand" name="brand" maxlength="20" />
-        </div>
-        <div>
-            <label for="model">Model Giriniz</label>
-            <br />
-            <input type="text" id="model" name="model" maxlength="20" />
-        </div>
-        <div>
-            <label for="ownerId">Araç Sahibinin ID Bilgisini Giriniz</label>
-            <br />
-            <input type="text" id="ownerId" name="ownerId" maxlength="50" />
-        </div>
-        <div class="p-3">
-            <button class="btn btn-primary" type="submit">Kaydet</button>
+                <select asp-for="CarType"
+                        asp-items="Html.GetEnumSelectList<CarType>()"
+                        required
+                        class="form-select">
+                    <option value="">Seçiniz</option>
+                </select>
+            </div>
+            <div class="mb-3 col-12 col-md-6">
+                <label class="form-label" for="brand">Marka Giriniz</label>
+                <br />
+                <input class="form-control" type="text" id="brand" name="brand" maxlength="20" />
+            </div>
+            <div class="mb-3 col-12 col-md-6">
+                <label class="form-label" for="model">Model Giriniz</label>
+                <br />
+                <input class="form-control" type="text" id="model" name="model" maxlength="20" />
+            </div>
+            <div class="mb-3 col-12 col-md-6">
+                <label class="form-label" for="ownerId">Araç Sahibinin ID Bilgisini Giriniz</label>
+                <br />
+                <input class="form-control" type="text" id="ownerId" name="ownerId" maxlength="50" />
+            </div>
+            <div class="p-3">
+                <button class="btn btn-primary" type="submit">Kaydet</button>
+            </div>
         </div>
     </form>
 </div>

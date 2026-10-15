@@ -8,55 +8,59 @@
         || User.IsInRole(RoleName.SuperAdmin);
 }
 
-<h1>Araç Detayı</h1>
+<h3 class="mb-4">Araç Detayı</h3>
 
-<dl>
-    <dt>Araç ID</dt>
-    <dd>@Model.Id</dd>
+<dl class="row mb-4">
+    <dt class="col-sm-4 text-muted">Araç ID</dt>
+    <dd class="col-sm-8">@Model.Id</dd>
 
-    <dt>Plaka</dt>
-    <dd>@Model.Plate</dd>
+    <dt class="col-sm-4 text-muted">Plaka</dt>
+    <dd class="col-sm-8">@Model.Plate</dd>
 
-    <dt>Araç Türü</dt>
-    <dd>@Html.DisplayFor(model => model.CarType)</dd>
+    <dt class="col-sm-4 text-muted">Araç Türü</dt>
+    <dd class="col-sm-8">@Html.DisplayFor(model => model.CarType)</dd>
 
-    <dt>Marka</dt>
-    <dd>@Model.Brand</dd>
+    <dt class="col-sm-4 text-muted">Marka</dt>
+    <dd class="col-sm-8">@Model.Brand</dd>
+    <dt class="col-sm-4 text-muted">Model</dt>
+    <dd class="col-sm-8">@Model.Model</dd>
 
-    <dt>Model</dt>
-    <dd>@Model.Model</dd>
+    <dt class="col-sm-4 text-muted">Araç Sahibi</dt>
+    <dd class="col-sm-8">@Model.OwnerName @Model.OwnerSurname</dd>
+    <dt class="col-sm-4 text-muted">Şirket</dt>
+    <dd class="col-sm-8">@Model.CompanyName</dd>
 
-    <dt>Araç Sahibi</dt>
-    <dd>@Model.OwnerName @Model.OwnerSurname</dd>
-
-    <dt>Şirket</dt>
-    <dd>@Model.CompanyName</dd>
-
-    <dt>Oluşturulma Tarihi</dt>
-    <dd>@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</dd>
+    <dt class="col-sm-4 text-muted">Oluşturulma Tarihi</dt>
+    <dd class="col-sm-8">@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</dd>
 </dl>
 
-<a asp-controller="Car" class="btn btn-primary" asp-action="Index">
-    Listeye Dön
-</a>
-
-@if (canManage)
-{
-    <a asp-controller="Car"
-       asp-action="Update"
-       asp-route-id="@Model.Id">
-        Düzenle
+<div class="row justify-content-around mb-3 col-12 col-md-9">
+    <a asp-controller="Car" class="btn btn-primary col-12 col-md-4" asp-action="Index">
+        Listeye Dön
     </a>
 
+    @if(canManage)
+    {
+        <a asp-controller="Car"
+           asp-action="Update"
+           asp-route-id="@Model.Id"
+           class="btn btn-outline-primary col-12 col-md-4">
+            Düzenle
+        </a>
+    }
+</div>
+
+@if(canManage)
+{
     <form method="post"
           asp-controller="Car"
           asp-action="Delete"
           asp-route-id="@Model.Id">
 
         <p>
-            <input type="checkbox" id="confirmDelete" required />
+            <input class="form-check-input" type="checkbox" id="confirmDelete" required />
 
-            <label for="confirmDelete">
+            <label class="form-check-label" for="confirmDelete">
                 Bu aracı silmek istiyorum.
             </label>
         </p>

@@ -5,7 +5,9 @@
     var userId = ViewContext.RouteData.Values["id"];
 }
 
-<h1>Kullanıcı Düzenle</h1>
+<h3 class="mb-4">Kullanıcı Düzenle</h3>
+
+<partial name="_FormMessages" />
 
 <form method="post"
       asp-controller="User"

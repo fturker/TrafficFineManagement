@@ -2,57 +2,71 @@
 
 @{
     ViewData["Title"] = "Ceza Düzenle";
-
     var id = ViewContext.RouteData.Values["id"];
 }
 
-<h1>Ceza Düzenle</h1>
+<h3 class="mb-4">Ceza Düzenle</h3>
 
 <partial name="_FormMessages" />
 
-<form method="post"
-      asp-controller="Fine"
-      asp-action="Update"
-      asp-route-id="@id">
+<div class="container mb-3">
+    <form method="post"
+          asp-controller="Fine"
+          asp-action="Update"
+          asp-route-id="@id">
 
-    <p>
-        <label asp-for="Amount">Tutar (TL)</label>
-        <br />
+        <div class="row g-3 mb-3">
+            <div class="col-12 col-md-6">
+                <label asp-for="Amount" class="form-label">
+                    Tutar (TL)
+                </label>
 
-        <input asp-for="Amount"
-               type="text"
-               inputmode="decimal"
-               required />
-    </p>
+                <input asp-for="Amount"
+                       type="text"
+                       inputmode="decimal"
+                       class="form-control"
+                       required />
+            </div>
 
-    <p>
-        <label asp-for="FineDate">Ceza Tarihi</label>
-        <br />
+            <div class="col-12 col-md-6">
+                <label asp-for="FineDate" class="form-label">
+                    Ceza Tarihi
+                </label>
 
-        <input asp-for="FineDate"
-               type="date"
-               required />
-    </p>
+                <input asp-for="FineDate"
+                       type="date"
+                       class="form-control"
+                       required />
+            </div>
 
-    <p>
-        <label asp-for="Description">Açıklama</label>
-        <br />
+            <div class="col-12">
+                <label asp-for="Description" class="form-label">
+                    Açıklama
+                </label>
 
-        <textarea asp-for="Description"
-                  rows="4"
-                  cols="40"
-                  maxlength="1000"
-                  required></textarea>
-    </p>
+                <textarea asp-for="Description"
+                          rows="4"
+                          maxlength="1000"
+                          class="form-control"
+                          required></textarea>
+            </div>
+        </div>
+        <div class="row g-3 justify-content-around w-100">
+            <div class="col-12 col-md-5">
+                <button type="submit"
+                        class="btn btn-primary">
+                    Güncelle
+                </button>
+            </div>
 
-    <button type="submit" class="btn btn-primary">
-        Güncelle
-    </button>
-
-    <a asp-controller="Fine"
-       asp-action="Details"
-       asp-route-id="@id"
-       class="btn btn-outline-secondary">
-        Vazgeç
-    </a>
-</form>
+            <div class="col-12 col-md-5">
+                <a asp-controller="Fine"
+                   asp-action="Details"
+                   asp-route-id="@id"
+                   class="btn btn-outline-primary">
+                    Vazgeç
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
