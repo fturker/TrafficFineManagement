@@ -1,0 +1,59 @@
+﻿@{
+    var pageNumber = ViewData["PageNumber"] is int page ? page : 1;
+    var pageSize = ViewData["PageSize"] is int size ? size : 20;
+    var hasNextPage = ViewData["HasNextPage"] is true;
+
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+
+    Dictionary<string, string> PageValues(int targetPage)
+    {
+        var values = Context.Request.Query.ToDictionary(
+            item => item.Key,
+            item => item.Value.ToString(),
+            StringComparer.OrdinalIgnoreCase);
+
+        values["PageNumber"] = targetPage.ToString();
+        values["PageSize"] = pageSize.ToString();
+
+        return values;
+    }
+}
+
+
+@if (ViewData.ModelState.IsValid && (pageNumber > 1 || hasNextPage))
+{
+    <nav aria-label="Sayfalar" class="my-3">
+        <ul class="pagination mb-0">
+            @if (pageNumber > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-controller="@controller"
+                       asp-action="@action"
+                       asp-all-route-data="@PageValues(pageNumber - 1)">
+                        Önceki
+                    </a>
+                </li>
+            }
+
+            <li class="page-item active" aria-current="page">
+                <span class="page-link">
+                    @pageNumber
+                </span>
+            </li>
+
+            @if (hasNextPage)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-controller="@controller"
+                       asp-action="@action"
+                       asp-all-route-data="@PageValues(pageNumber + 1)">
+                        Sonraki
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

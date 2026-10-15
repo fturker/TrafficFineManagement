@@ -35,7 +35,7 @@ namespace TrafficFineManagement.Web.Data.Repositories.Implementations
                 .OrderBy(c => c.LastUpdatedAt)
                 .ThenBy(c => c.Id)
                 .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
+                .Take(pageSize + 1)
                 .ToListAsync();
         }
 

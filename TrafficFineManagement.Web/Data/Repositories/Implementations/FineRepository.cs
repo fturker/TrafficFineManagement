@@ -25,7 +25,7 @@ namespace TrafficFineManagement.Web.Data.Repositories.Implementations
                 .OrderByDescending(fine => fine.CreatedAt)
                 .ThenByDescending(fine => fine.Id)
                 .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
+                .Take(pageSize + 1)
                 .ToListAsync();
         }
 

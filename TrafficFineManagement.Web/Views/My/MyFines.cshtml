@@ -58,31 +58,6 @@ else
             </tbody>
         </table>
     </div>
-}
 
-@if (ViewData.ModelState.IsValid)
-{
-    <p>
-        @if (filter.PageNumber > 1)
-        {
-            <a asp-controller="My"
-               asp-action="MyFines"
-               asp-route-pageNumber="@(filter.PageNumber - 1)"
-               asp-route-pageSize="@filter.PageSize">
-                Önceki
-            </a>
-        }
-
-        <span>Sayfa @filter.PageNumber</span>
-
-        @if (Model.Count == filter.PageSize)
-        {
-            <a asp-controller="My"
-               asp-action="MyFines"
-               asp-route-pageNumber="@(filter.PageNumber + 1)"
-               asp-route-pageSize="@filter.PageSize">
-                Sonraki
-            </a>
-        }
-    </p>
+    <partial name="_Pagination" />
 }

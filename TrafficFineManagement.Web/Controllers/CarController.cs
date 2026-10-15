@@ -28,6 +28,10 @@ namespace TrafficFineManagement.Web.Controllers
                 return View(new List<CarListResponse>());
             }
 
+            ViewData["PageNumber"] = request.PageNumber;
+            ViewData["PageSize"] = request.PageSize;
+            ViewData["HasNextPage"] = result.Data.Count > request.PageSize;
+
             return View(result.Data);
         }
 
