@@ -48,5 +48,14 @@ namespace TrafficFineManagement.Web.Controllers
 
             return RedirectToAction("login", "auth");
         }
+
+        [AllowAnonymous]
+        [HttpGet("/access-denied")]
+        public IActionResult AccessDenied()
+        {
+            Response.StatusCode = StatusCodes.Status403Forbidden;
+
+            return View();
+        }
     }
 }

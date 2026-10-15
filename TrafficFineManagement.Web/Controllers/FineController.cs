@@ -58,8 +58,7 @@ namespace TrafficFineManagement.Web.Controllers
         }
 
         [Authorize(Roles = 
-            RoleName.Officer + "," + 
-            RoleName.Admin + "," +
+            RoleName.Officer + "," +
             RoleName.SuperAdmin)]
         [HttpPost("create")]
         [ValidateAntiForgeryToken]
@@ -96,7 +95,7 @@ namespace TrafficFineManagement.Web.Controllers
             if (!ModelState.IsValid)
             {
                 TempData["ErrorMessage"] = "Geçersiz işlem bilgisi.";
-                return RedirectToAction(nameof(PendingAdmin));
+                return RedirectToAction(nameof(Index));
             }
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -109,7 +108,7 @@ namespace TrafficFineManagement.Web.Controllers
             TempData[result.IsSuccess ? "SuccessMessage" : "ErrorMessage"] =
                 result.IsSuccess ? "Ceza onaylandı." : result.Message;
 
-            return RedirectToAction(nameof(PendingAdmin));
+            return RedirectToAction(nameof(Index));
         }
 
         [Authorize(Roles =

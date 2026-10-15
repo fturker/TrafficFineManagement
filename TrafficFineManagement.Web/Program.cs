@@ -1,4 +1,3 @@
-using TrafficFineManagement.Web.Data.Seed;
 using TrafficFineManagement.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,10 +37,9 @@ app.MapControllerRoute(
     pattern: "{controller=Auth}/{action=login}/{id?}")
     .WithStaticAssets();
 
-await RoleSeeder.SeedAsync(app.Services);
 if (app.Environment.IsDevelopment())
 {
-    await SuperAdminSeeder.SeedAsync(app.Services);
+    await app.SeedDatabaseAsync();
 }
 
 

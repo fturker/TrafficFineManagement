@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Erişim Reddedildi";
+}
+
+<div class="text-center py-4">
+    <h3 class="mb-3">Erişim Reddedildi</h3>
+
+    <p class="text-muted mb-4">
+        Bu sayfayı görüntüleme veya bu işlemi gerçekleştirme yetkiniz yok.
+    </p>
+
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="btn btn-primary">
+            Ana Sayfaya Dön
+        </a>
+    }
+    else
+    {
+        <a asp-controller="Auth"
+           asp-action="Login"
+           class="btn btn-primary">
+            Giriş Yap
+        </a>
+    }
+</div>
