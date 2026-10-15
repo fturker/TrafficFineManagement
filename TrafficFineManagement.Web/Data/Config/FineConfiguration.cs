@@ -8,7 +8,7 @@ namespace TrafficFineManagement.Web.Data.Config
     {
         public void Configure(EntityTypeBuilder<Fine> builder)
         {
-            builder.Property(x => x.Amount).HasPrecision(8, 2);
+            builder.Property(x => x.Amount).HasPrecision(10, 2);
 
             builder.Property(x => x.Description).HasMaxLength(1000);
 

@@ -59,10 +59,31 @@ namespace TrafficFineManagement.Web.Rules.Implementations
             Fine fine,
             User user)
         {
-            if (fine.Status != FineStatus.New || fine.IsPaid)
+            if (fine.Status != FineStatus.New && fine.Status != FineStatus.Rejected || fine.IsPaid)
             {
                 return Result<bool>.Failure(
                     "Sadece ödenmemiş ve admin onayı bekleyen cezalar güncellenebilir.");
+            }
+
+            if (fine.Status == FineStatus.Rejected)
+            {
+                if (fine.CreatedByUserId != user.Id)
+                {
+                    return Result<bool>.Failure(
+                        "Reddedilen cezayı yalnızca oluşturan kullanıcı düzenleyebilir.");
+                }
+
+                var alreadyRevised = fine.Histories.Any(history =>
+                    history.ActionType == FineActionType.Updated &&
+                    history.PreviousStatus == FineStatus.Rejected);
+
+                if (alreadyRevised)
+                {
+                    return Result<bool>.Failure(
+                        "Bu ceza için tek seferlik düzenleme hakkı kullanılmış.");
+                }
+
+                return Result<bool>.Success(true);
             }
 
             var roles = await userManager.GetRolesAsync(user);

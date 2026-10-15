@@ -48,6 +48,12 @@ namespace TrafficFineManagement.Web.Services.Implementations
                 return Result<bool>.Failure("Car not found.");
             }
 
+            if (await carRepository.HasFinesAsync(id))
+            {
+                return Result<bool>.Failure(
+                    "Bu araca ait ceza kayıtları bulunduğu için araç silinemez.");
+            }
+
             carRepository.Delete(car);
             await carRepository.SaveChangesAsync();
 
