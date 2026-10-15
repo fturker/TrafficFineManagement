@@ -28,6 +28,7 @@ else
                     <th>Tarih</th>
                     <th>Durum</th>
                     <th>Ödeme</th>
+                    <th>İşlem</th>
                 </tr>
             </thead>
 
@@ -41,6 +42,17 @@ else
                         <td>@fine.FineDate.ToString("dd.MM.yyyy")</td>
                         <td>@Html.DisplayFor(_ => fine.Status)</td>
                         <td>@(fine.IsPaid ? "Ödendi" : "Ödenmedi")</td>
+                        <td>
+                            @if (!fine.IsPaid)
+                            {
+                                <a asp-controller="Payment"
+                                   asp-action="Pay"
+                                   asp-route-fineId="@fine.Id"
+                                   class="btn btn-primary">
+                                    Öde
+                                </a>
+                            }
+                        </td>
                     </tr>
                 }
             </tbody>

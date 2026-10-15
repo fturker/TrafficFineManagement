@@ -18,6 +18,7 @@ namespace TrafficFineManagement.Web.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IFineRepository, FineRepository>();
             services.AddScoped<IFineHistoryRepository, FineHistoryRepository>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
 
             services.AddScoped<ICarService, CarService>();
             services.AddScoped<IFineService, FineService>();
@@ -26,7 +27,8 @@ namespace TrafficFineManagement.Web.Extensions
             services.AddScoped<IUserBusinessRules, UserBusinessRules>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IFineBusinessRules, FineBusinessRules>();
-
+            services.AddScoped<IPaymentBusinessRules, PaymentBusinessRules>();
+            services.AddScoped<IPaymentService, PaymentService>();
 
             return services;
         }

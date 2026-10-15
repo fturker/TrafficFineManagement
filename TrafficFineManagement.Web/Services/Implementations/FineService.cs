@@ -160,7 +160,7 @@ namespace TrafficFineManagement.Web.Services.Implementations
                 fine,
                 user,
                 FineActionType.Updated,
-                "Fine details updated.",
+                fine.Description,
                 previousStatus,
                 now);
 

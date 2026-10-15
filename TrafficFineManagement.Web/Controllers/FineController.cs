@@ -314,6 +314,34 @@ namespace TrafficFineManagement.Web.Controllers
                 return View(viewName, new List<FineListResponse>());
             }
 
+            if (result.Data.Count == request.PageSize)
+            {
+                var nextRequest = new FineFilterRequest
+                {
+                    PageNumber = request.PageNumber + 1,
+                    PageSize = request.PageSize,
+
+                    SearchTerm = request.SearchTerm,
+                    CarId = request.CarId,
+                    Status = request.Status,
+                    IsPaid = request.IsPaid
+                };
+
+                var nextResult = await fineService.GetAllAsync(nextRequest);
+
+                if (!nextResult.IsSuccess || nextResult.Data is null)
+                {
+                    ModelState.AddModelError(
+                        string.Empty,
+                        "Sonraki sayfa bilgisi alınamadı. Lütfen tekrar deneyin.");
+                }
+
+                else
+                {
+                    ViewData["HasNextPage"] = nextResult.Data.Count > 0;
+                }
+            }
+
             return View(viewName, result.Data); ;
         }
 

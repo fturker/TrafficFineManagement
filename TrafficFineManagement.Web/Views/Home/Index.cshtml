@@ -1,3 +1,57 @@
-﻿@{
+﻿@using TrafficFineManagement.Web.Models.Enums
+@model TrafficFineManagement.Web.Models.DTOs.User.UserResponse
+
+@{
     ViewData["Title"] = "Ana Sayfa";
 }
+
+<h3 class="mb-4">Kullanıcı Bilgilerim</h3>
+
+<partial name="_FormMessages" />
+
+<dl class="row mb-0">
+    <dt class="col-sm-4 text-muted">Kullanıcı Adı</dt>
+    <dd class="col-sm-8">@Model.UserName</dd>
+
+    <dt class="col-sm-4 text-muted">Hesap Türü</dt>
+    <dd class="col-sm-8">
+        @Html.DisplayFor(model => model.AccountType)
+    </dd>
+
+    <dt class="col-sm-4 text-muted">Ad</dt>
+    <dd class="col-sm-8">@Model.Name</dd>
+
+    <dt class="col-sm-4 text-muted">Soyad</dt>
+    <dd class="col-sm-8">@Model.Surname</dd>
+
+    @if (Model.AccountType == AccountType.Business)
+    {
+        <dt class="col-sm-4 text-muted">Şirket Adı</dt>
+        <dd class="col-sm-8">@Model.CompanyName</dd>
+
+        <dt class="col-sm-4 text-muted">Vergi Numarası</dt>
+        <dd class="col-sm-8">@Model.TaxNumber</dd>
+    }
+    else
+    {
+        <dt class="col-sm-4 text-muted">TC Kimlik Numarası</dt>
+        <dd class="col-sm-8">@(Model.IdentityNumber ?? "Belirtilmemiş")</dd>
+
+        <dt class="col-sm-4 text-muted">Doğum Tarihi</dt>
+        <dd class="col-sm-8">
+            @(Model.BirthDate?.ToString("dd.MM.yyyy") ?? "Belirtilmemiş")
+        </dd>
+    }
+
+    <dt class="col-sm-4 text-muted">Adres</dt>
+    <dd class="col-sm-8 text-break">
+        @(string.IsNullOrWhiteSpace(Model.Address)
+                ? "Belirtilmemiş"
+                : Model.Address)
+    </dd>
+
+    <dt class="col-sm-4 text-muted">Kayıt Tarihi</dt>
+    <dd class="col-sm-8">
+        @Model.CreatedAt.ToString("dd.MM.yyyy")
+    </dd>
+</dl>

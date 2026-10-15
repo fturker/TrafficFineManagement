@@ -1,0 +1,51 @@
+﻿@model TrafficFineManagement.Web.Models.DTOs.Fine.FineDetailResponse
+
+@{
+    ViewData["Title"] = "Ceza Ödeme";
+}
+
+<h3 class="mb-4">Ceza Ödeme</h3>
+
+<partial name="_FormMessages" />
+
+<div class="row">
+    <div class="col-12 col-lg-7">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <dl class="row mb-4">
+                    <dt class="col-sm-4 text-muted">Ceza ID</dt>
+                    <dd class="col-sm-8">@Model.Id</dd>
+
+                    <dt class="col-sm-4 text-muted">Plaka</dt>
+                    <dd class="col-sm-8">@Model.Plate</dd>
+
+                    <dt class="col-sm-4 text-muted">Açıklama</dt>
+                    <dd class="col-sm-8">@Model.Description</dd>
+
+                    <dt class="col-sm-4 text-muted">Ödenecek Tutar</dt>
+                    <dd class="col-sm-8 fw-bold">
+                        @Model.Amount.ToString("N2") TL
+                    </dd>
+                </dl>
+
+                <form method="post"
+                      asp-controller="Payment"
+                      asp-action="PayConfirmed"
+                      asp-route-fineId="@Model.Id">
+
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="submit" class="btn btn-success">
+                            Ödemeyi Tamamla
+                        </button>
+
+                        <a asp-controller="My"
+                           asp-action="MyFines"
+                           class="btn btn-outline-secondary">
+                            Vazgeç
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

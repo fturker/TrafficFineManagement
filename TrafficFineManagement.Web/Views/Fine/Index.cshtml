@@ -8,6 +8,14 @@
     var canCreate = User.IsInRole(RoleName.Officer)
         || User.IsInRole(RoleName.SuperAdmin);
 
+    var filter = ViewData["Filter"] as FineFilterRequest
+        ?? new FineFilterRequest();
+
+    var hasNextPage = ViewData["HasNextPage"] is true;
+
+    var currentAction =
+        ViewContext.RouteData.Values["action"]?.ToString() ?? "Index";
+}
 }
 
 <h3 class="mb-4">@ViewData["Title"]</h3>

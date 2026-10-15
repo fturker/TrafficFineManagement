@@ -33,6 +33,7 @@ namespace TrafficFineManagement.Web.Data.Repositories.Implementations
         {
             return context.Fines
                 .Include(fine => fine.Car)
+                .ThenInclude(car => car.User)
                 .Include(fine => fine.CreatedByUser)
                 .Include(fine => fine.Histories)
                 .ThenInclude(history => history.User)
